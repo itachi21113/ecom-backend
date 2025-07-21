@@ -92,21 +92,4 @@ The API will be available at `http://localhost:8080`.
 
 
 
-\## 🚨 \*\*IMPORTANT SECURITY NOTE\*\*
-
-
-
-Your current `application.properties` file contains sensitive information like your database password (`Utkarsh@1133`) and JWT secret key. It is \*\*highly recommended\*\* that you do not keep these secrets in your code. A better practice is to use environment variables.
-
-
-
-\*\*Example:\*\*
-
-```properties
-
-\# application.properties
-
-spring.datasource.password=${DB\_PASSWORD}
-
-jwt.secret=${JWT\_SECRET}
 
