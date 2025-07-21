@@ -90,6 +90,3 @@ To run this project locally, you will need to have Java 17 and Maven installed.
 
 The API will be available at `http://localhost:8080`.
 
-
-
-
