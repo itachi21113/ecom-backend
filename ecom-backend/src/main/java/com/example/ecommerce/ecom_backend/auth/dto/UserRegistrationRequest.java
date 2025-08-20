@@ -4,9 +4,16 @@ package com.example.ecommerce.ecom_backend.auth.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Data // Lombok to generate getters, setters, toString, equals, hashCode
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRegistrationRequest {
 
     @NotBlank(message = "Email cannot be empty")

@@ -4,9 +4,11 @@ package com.example.ecommerce.ecom_backend.config;
 import com.example.ecommerce.ecom_backend.user.model.Role;
 import com.example.ecommerce.ecom_backend.user.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("!test")
 public class DataLoader implements CommandLineRunner {
 
     private final RoleRepository roleRepository;

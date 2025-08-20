@@ -8,6 +8,10 @@ import com.example.ecommerce.ecom_backend.product.model.Product; // Import Produ
 import com.example.ecommerce.ecom_backend.product.repository.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,8 +51,13 @@ public class ProductServiceImpl implements ProductService {
         dto.setImageUrl(product.getImageUrl());
         return dto;
     }
+    // 3. @CacheEvict: Removes data from the cache.
+    // - When we create a new product, the 'allProducts' list is now outdated.
+    // - This annotation EVICTS (deletes) the 'allProducts' entry from the cache.
+    // - The next time getAllProducts() is called, it will be a "cache miss", forcing a fresh fetch from the DB.
 
     @Override
+    @CacheEvict(value = "products", key = "'allProducts'")
     public ProductResponseDTO createProduct(ProductRequestDTO productRequestDTO) {
         Product product = mapRequestDTOToEntity(productRequestDTO);
         Product savedProduct = productRepository.save(product);
@@ -56,6 +65,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(value = "products", key = "'allProducts'")
     public List<ProductResponseDTO> getAllProducts() {
         List<Product> products = productRepository.findAll();
         return products.stream()
@@ -64,13 +74,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(value = "products", key = "#id")
     public ProductResponseDTO getProductById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
         return mapEntityToResponseDTO(product);
     }
+    // 4. @CachePut: Updates the value in the cache without interfering with the method execution.
+    // - When a product is updated, we want to update its specific entry in the cache.
 
     @Override
+    @Caching(
+            put = { @CachePut(value = "products", key = "#id") },
+            evict = { @CacheEvict(value = "products", key = "'allProducts'") }
+    )
     public ProductResponseDTO updateProduct(Long id, ProductRequestDTO productRequestDTO) {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
@@ -86,6 +103,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "products", key = "#id"),
+            @CacheEvict(value = "products", key = "'allProducts'")
+    })
     public void deleteProduct(Long id) {
         // Check if product exists before deleting
         Product productToDelete = productRepository.findById(id)

@@ -1,13 +1,11 @@
 package com.example.ecommerce.ecom_backend.user.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import lombok.EqualsAndHashCode;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +14,7 @@ import java.util.Set;
 @Entity // Marks this class as a JPA entity
 @Table(name = "users") // Maps this entity to the "users" table
 @Data // Lombok annotation to generate getters, setters, equals, hashCode, and toString
+@Builder
 @NoArgsConstructor // Lombok annotation to generate a no-argument constructor
 @AllArgsConstructor // Lombok annotation to generate a constructor with all fields
 @EntityListeners(AuditingEntityListener.class)
