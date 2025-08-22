@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Cacheable(value = "products", key = "'allProducts'")
+//    @Cacheable(value = "products", key = "'allProducts'")
     public List<ProductResponseDTO> getAllProducts() {
         List<Product> products = productRepository.findAll();
         return products.stream()

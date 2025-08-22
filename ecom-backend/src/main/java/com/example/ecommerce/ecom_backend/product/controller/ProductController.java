@@ -29,7 +29,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO) {
         ProductResponseDTO newProduct = productService.createProduct(productRequestDTO);
-        return new ResponseEntity<>(newProduct, HttpStatus.CREATED); // 201 Created
+        return ResponseEntity.ok(newProduct); // 201 Created
     }
 
     // Get all products - Accessible by USER or ADMIN role (or no role if public access is desired)
@@ -62,6 +62,6 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id); // Service throws NotFoundException
-        return new ResponseEntity<>("Product deleted successfully!", HttpStatus.NO_CONTENT); // 204 No Content
+        return ResponseEntity.ok("Product with ID " + id + " deleted successfully.");
     }
 }
