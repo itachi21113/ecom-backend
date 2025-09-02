@@ -3,6 +3,8 @@ package com.example.ecommerce.ecom_backend.order.service;
 
 import com.example.ecommerce.ecom_backend.order.dto.OrderRequestDTO;
 import com.example.ecommerce.ecom_backend.order.dto.OrderResponseDTO;
+
+
 import java.util.List;
 
 public interface OrderService {
@@ -17,4 +19,7 @@ public interface OrderService {
     List<OrderResponseDTO> getAllOrders();
 
     OrderResponseDTO updateOrderStatus(Long orderId, String newStatus);
+
+
+
 }
