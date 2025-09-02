@@ -61,4 +61,5 @@ public class OrderController {
         OrderResponseDTO updatedOrder = orderService.updateOrderStatus(orderId, newStatus);
         return ResponseEntity.ok(updatedOrder); // 200 OK
     }
+
 }

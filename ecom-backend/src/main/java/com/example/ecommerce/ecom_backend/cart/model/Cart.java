@@ -1,19 +1,16 @@
-// src/main/java/com/example/ecommerce/ecom_backend/model/Cart.java
 package com.example.ecommerce.ecom_backend.cart.model;
 
 import com.example.ecommerce.ecom_backend.user.model.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList; // Or HashSet, depending on preference for collection type
-import java.util.List;     // Or Set, depending on preference
 
 @Entity
 @Table(name = "carts")
@@ -22,43 +19,36 @@ import java.util.List;     // Or Set, depending on preference
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Cart {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-     @OneToOne(fetch = FetchType.LAZY) // LAZY fetch type is generally preferred for performance
-     @JoinColumn(name = "user_id", nullable = false, unique = true) // Foreign key column, must be unique for each user
-     @EqualsAndHashCode.Exclude // Exclude user from equals and hashCode
-     private User user;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @JsonBackReference("user-cart")
+    @EqualsAndHashCode.Exclude
+    private User user;
 
-    // One-to-Many relationship with CartItem. A Cart can have many CartItems.
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    @EqualsAndHashCode.Exclude // Exclude user from equals and hashCode
-    private List<CartItem> cartItems = new ArrayList<>(); // Initialize to prevent NullPointerException
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference("cart-item")
+    @EqualsAndHashCode.Exclude
+    private List<CartItem> cartItems = new ArrayList<>();
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private LocalDateTime createdAt;
-
     @LastModifiedDate
-    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    // Convenience method to add a CartItem
     public void addCartItem(CartItem item) {
-        if (cartItems == null) {
-            cartItems = new ArrayList<>();
-        }
+        if (cartItems == null) { cartItems = new ArrayList<>(); }
         cartItems.add(item);
-        item.setCart(this); // Ensure the bidirectional relationship is set
+        item.setCart(this);
     }
-
-    // Convenience method to remove a CartItem
     public void removeCartItem(CartItem item) {
         if (cartItems != null) {
             cartItems.remove(item);
-            item.setCart(null); // Remove the bidirectional relationship
+            item.setCart(null);
         }
     }
 }

@@ -68,7 +68,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // This is the address of your front-end
-        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500", "http://localhost:5500" ));
+        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500", "http://localhost:5500","http://127.0.0.1:5503" ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -88,6 +88,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // Allow public access to registration and login endpoints
                         .requestMatchers("/api/auth/**").permitAll()
+
+                        .requestMatchers("/api/stripe/events").permitAll()
+
+                        .requestMatchers("/api/stripe/webhook").permitAll()
+
+                        .requestMatchers("/api/payments/**").permitAll()
                         // All other requests require authentication (e.g., /api/users/**, /api/products/**)
                         .anyRequest().authenticated()
                 )

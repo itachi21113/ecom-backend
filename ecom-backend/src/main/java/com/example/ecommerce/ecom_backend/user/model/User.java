@@ -1,5 +1,8 @@
 package com.example.ecommerce.ecom_backend.user.model;
 
+import com.example.ecommerce.ecom_backend.cart.model.Cart;
+import com.example.ecommerce.ecom_backend.order.model.Order;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -61,4 +65,12 @@ public class User {
     @Column(nullable = false) // Cannot be null
     private LocalDateTime updatedAt;
     // Lombok handles constructors, getters, and setters.
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference("user-cart")
+    private Cart cart;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("user-order")
+    private List<Order> orders;
 }
