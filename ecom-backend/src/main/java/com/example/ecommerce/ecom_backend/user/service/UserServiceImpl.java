@@ -168,5 +168,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email : '" + email + "'"));
         return convertToDto(user);
+
     }
 }
