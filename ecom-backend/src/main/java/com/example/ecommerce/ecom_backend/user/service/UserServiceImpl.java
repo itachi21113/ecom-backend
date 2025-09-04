@@ -163,4 +163,10 @@ public class UserServiceImpl implements UserService {
         User savedUser = userRepository.save(newUser);
         return convertToDto(savedUser);
     }
+    @Override
+    public UserResponseDTO getUserByEmail(String email) throws ResourceNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email : '" + email + "'"));
+        return convertToDto(user);
+    }
 }

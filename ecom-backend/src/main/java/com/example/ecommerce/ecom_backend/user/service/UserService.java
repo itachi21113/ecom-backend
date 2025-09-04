@@ -15,4 +15,5 @@ public interface UserService {
     UserResponseDTO updateUser(Long id, UserUpdateDTO userUpdateDTO) throws ResourceNotFoundException; // Takes DTO, returns DTO, throws exception
     void deleteUser(Long id) throws ResourceNotFoundException; // Throws exception
     UserResponseDTO registerUser(UserRegistrationRequest registrationRequest) throws DuplicateEmailException; // Returns DTO, throws exception
+    UserResponseDTO getUserByEmail(String email) throws ResourceNotFoundException;
 }
