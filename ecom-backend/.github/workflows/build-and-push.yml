@@ -5,7 +5,7 @@ name: Build and Push Docker Images
 # It will run automatically on any push to the "main" branch.
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 # A workflow is made up of one or more "jobs" that can run in sequence or in parallel.
 jobs:
