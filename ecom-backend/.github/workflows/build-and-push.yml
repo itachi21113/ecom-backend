@@ -2,7 +2,7 @@
 name: Build and Push Docker Images
 
 # This section defines the trigger for the workflow.
-# It will run automatically on any push to the "main" branch.
+# It will run automatically on any push to the "master" branch.
 on:
   push:
     branches: [ "master" ]
@@ -32,14 +32,14 @@ jobs:
       - name: Build and push backend image
         uses: docker/build-push-action@v4
         with:
-          context: ./ecom-backend/ecom-backend-dockerisation/ecom-backend # Path to the backend Dockerfile
-          push: true # Actually push the image to Docker Hub
-          tags: itachi21113/ecom-backend:latest # CHANGE THIS
+          context: ./ecom-backend/ecom-backend-dockerisation/ecom-backend
+          push: true
+          tags: itachi21113/ecom-backend:latest
 
       # Step 4: Build and push the frontend Docker image.
       - name: Build and push frontend image
         uses: docker/build-push-action@v4
         with:
-          context: ./myshop-frontend/MyShop-frontend-Container-Docker # Path to the frontend code
-          push: true # Actually push the image to Docker Hub
-          tags: itachi21113/ecom-frontend:latest # CHANGE THIS
+          context: ./myshop-frontend/MyShop-frontend-Container-Docker
+          push: true
+          tags: itachi21113/ecom-frontend:latest
