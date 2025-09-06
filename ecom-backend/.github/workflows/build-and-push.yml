@@ -32,7 +32,8 @@ jobs:
       - name: Build and push backend image
         uses: docker/build-push-action@v4
         with:
-          context: ./ecom-backend/ecom-backend
+          context: ./ecom-backend
+          file: ./ecom-backend/Dockerfile
           push: true
           tags: itachi21113/ecom-backend:latest
 
