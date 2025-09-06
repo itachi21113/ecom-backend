@@ -28,7 +28,7 @@ jobs:
         with:
           # This context path tells Docker to look for the Dockerfile
           # inside the "ecom-backend" folder.
-          context: ./ecom-backend
+          context: ./ecom-backend/ecom-backend
           push: true
           tags: itachi21113/ecom-backend:latest
 
